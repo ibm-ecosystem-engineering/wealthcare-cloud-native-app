@@ -1,0 +1,182 @@
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-deployment-notification
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"
+  labels:
+    app: wealthcare-application
+    subapp: notification
+spec:
+  template:
+    kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: wealthcare-notification
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: notification
+    spec:
+      selector:
+        matchLabels:
+          app: wealthcare-application
+          subname: notification
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            app: wealthcare-application
+            subname: notification
+        spec:
+          containers:
+            - name: container-notification
+              image: "mydockeruser/wealthcare-notification-mcm-dev:0.0.1"
+              imagePullPolicy: Always
+              ports:
+                - name: my-http
+                  containerPort: 9094
+                  protocol: TCP
+                - name: https
+                  containerPort: 8082
+              livenessProbe:
+                httpGet:  
+                  path: /notification
+                  port: my-http
+                initialDelaySeconds: 120
+              failureThreshold: 6
+              readinessProbe:
+                httpGet:
+                  path: /notification
+                  port: my-http
+                initialDelaySeconds: 120                  
+              resources:
+                requests:
+                  memory: "500Mi"
+                  # cpu: "250m"
+                limits:
+                  memory: "1000Mi"
+                  # cpu: "1000m"           
+              env:
+              # DB2 Database
+                - name: spring.datasource.url
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.url
+                - name: spring.datasource.username
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.username
+                - name: spring.datasource.password
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.password
+                # MQ
+                - name: ibm.mq.channel
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.channel
+                - name: ibm.mq.queueManager
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueManager
+                - name: ibm.mq.connName
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.connName
+                - name: ibm.mq.queueName.financialPlan
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueName.financialPlan
+                - name: ibm.mq.queueName.customer
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueName.customer
+                - name: ibm.mq.queueName.wealthManager
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueName.wealthManager       
+                - name: app.notification.from
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: app.notification.from 
+                - name: app.notification.cc
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: app.notification.cc   
+                - name: configmap.test1.key
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: configmap.test1.key        
+---
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-service-notification
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"
+  labels:
+    app: wealthcare-application
+    subapp: notification
+spec:
+  template:
+    kind: Service
+    apiVersion: v1
+    metadata:
+      name: wealthcare-notification
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: notification
+    spec:
+      type: LoadBalancer
+      ports:
+        - name: my-http
+          port: 9094
+          targetPort: my-http
+      selector:
+        app: wealthcare-application
+        subname: notification
+---
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-route-notification
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"  
+  labels:
+    app: wealthcare-application
+    subapp: notification
+spec:
+  template:
+    kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: wealthcare-notification
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: notification
+    spec:
+      path: /
+      to:
+        kind: Service
+        name: wealthcare-notification
+        weight: 100
+      port:
+        targetPort: my-http

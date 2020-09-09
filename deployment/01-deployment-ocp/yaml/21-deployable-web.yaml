@@ -1,0 +1,83 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: wealthcare-web
+  namespace: wealthcare-ns
+  labels:
+    app: wealthcare-application
+    subname: web     
+spec:
+  selector:
+    matchLabels:
+      app: wealthcare-application
+      subname: web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wealthcare-application
+        subname: web
+    spec:
+      containers:
+        - name: container-web
+          image: "mydockeruser/wealthcare-web-dev:0.0.1"
+          imagePullPolicy: Always
+          ports:
+            - name: my-http
+              containerPort: 9090
+              protocol: TCP
+            - name: https
+              containerPort: 8082
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"        
+          env:
+            - name: configmap.prop.api.server.url.user
+              valueFrom:
+                configMapKeyRef:
+                  name: wealthcare-config-map
+                  key: configmap.prop.api.server.url.user
+            - name: configmap.prop.api.server.url.financialplan
+              valueFrom:
+                configMapKeyRef:
+                  name: wealthcare-config-map
+                  key: configmap.prop.api.server.url.financialplan
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wealthcare-web
+  namespace: wealthcare-ns
+  labels:
+    app: wealthcare-application
+    subname: web
+spec:
+  type: LoadBalancer
+  ports:
+    - name: my-http
+      port: 9090
+      targetPort: 9090
+  selector:
+    app: wealthcare-application
+    subname: web
+---        
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: wealthcare-web
+  namespace: wealthcare-ns
+  labels:
+    app: wealthcare-application
+    subname: web
+spec:
+  path: /
+  to:
+    kind: Service
+    name: wealthcare-web
+    weight: 100
+  port:
+    targetPort: my-http

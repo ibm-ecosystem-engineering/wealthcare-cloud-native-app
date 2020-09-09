@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wealthcare-channel-ns
+  labels:
+    app: wealthcare-application
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wealthcare-subscription-ns
+  labels:
+    app: wealthcare-application
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wealthcare-app-ns
+  labels:
+    app: wealthcare-application

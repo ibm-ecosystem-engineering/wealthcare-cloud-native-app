@@ -1,0 +1,39 @@
+---
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-config-map
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"  
+  labels:
+    app: wealthcare-application
+    subapp: common
+spec:
+  template:
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: wealthcare-config-map
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: configmap
+    type: Opaque
+    data:
+      configmap.prop.api.server.url.user: http://wealthcare-user:9090
+      configmap.prop.api.server.url.financialplan: http://wealthcare-financialplan:9090
+      ibm.mq.channel: DEV.APP.SVRCONN
+      ibm.mq.queueManager: qmgr
+      ibm.mq.connName: 111.222.333.444(1414)
+      ibm.mq.queueName.financialPlan: DEV.QUEUE.1
+      ibm.mq.queueName.customer: DEV.QUEUE.2
+      ibm.mq.queueName.wealthManager: DEV.QUEUE.3
+      app.notification.from: test
+      app.notification.cc: test
+      spring.datasource.url: jdbc:h2:mem:/wcare
+      spring.datasource.username: admin
+      spring.datasource.password: admin
+      spring.datasource.driver-class-name: org.h2.Driver
+      spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+---

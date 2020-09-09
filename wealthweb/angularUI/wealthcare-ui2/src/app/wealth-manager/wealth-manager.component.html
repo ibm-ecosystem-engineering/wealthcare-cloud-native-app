@@ -1,0 +1,90 @@
+    <wealthcare-header [userInfo]="userInfo"></wealthcare-header>
+<!-- Customer list -->
+<wealth-customer *ngIf="!financialEnabled" [userDetails]="customersList"
+  (variableToEmit)='displayCustomerdetails($event)'>
+</wealth-customer>
+
+<!-- customer details page -->
+
+<div class="customer-details-container" *ngIf="financialEnabled">
+  <!-- <div class="header">
+    <span class="cursor-pointer" (click)="openCustomers()">Customer -></span> 
+    <span *ngIf="customerDetails">{{customerDetails.name}}</span>
+  </div> -->
+  <div class="bx--grid">
+    <div class="bx--row">
+      <div class="bx--col">
+        <div class="breadCrumbs">
+          <ul>
+            <li>
+              <a (click)="openCustomers(customerDetails.id)">Customer</a><span>></span>
+              <span *ngIf="customerDetails" class="current">{{customerDetails.firstName}} {{customerDetails.lastName}}</span>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="bx--grid">
+      <div class="bx--row">
+        <div class="bx--col">
+          <ibm-tabs isNavigation="false" (tabSelected)="onFinancialPlanClick($event)">
+            <ibm-tab heading="Financial Plan">
+              <div class="user-list">
+                <financial-plan [customersGoalList]="goalList" [financialEnabled]="financialEnabled">
+                </financial-plan>
+              </div>
+            </ibm-tab>
+            <ibm-tab heading="Portifilo">
+              <br><br>
+              <div class="user-list">
+                  <div class="chartsSection">
+                          <div class="lhs">
+                            <div class="flex">
+                              <div class="flex-item">
+                                <div style="display: block;">
+                                  <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels"
+                                    [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+                                    [chartType]="lineChartType" [plugins]="lineChartPlugins" (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)"></canvas>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="rhs">
+                            <div class="flex">
+                              <div class="flex-item">
+                                  <div style="display: block">
+                                      <canvas baseChart
+                                        [datasets]="barChartData"
+                                        [labels]="barChartLabels"
+                                        [options]="barChartOptions"
+                                        [plugins]="barChartPlugins"
+                                        [legend]="barChartLegend"
+                                        [colors]="barChartColors"  
+                                        [chartType]="barChartType">
+                                      </canvas>
+                                    </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+              <br><br>
+                <app-table [columnsForTable]="columnsForTable" [rowsForTable]="rowsForTable">
+                </app-table>
+              </div>
+            </ibm-tab>
+            <ibm-tab heading="Profile">
+              <div class="user-list">
+                <div ibmRow>
+                </div>
+                <app-profile [customerDetails]="customerDetails"></app-profile>
+              </div>
+            </ibm-tab>
+          </ibm-tabs>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

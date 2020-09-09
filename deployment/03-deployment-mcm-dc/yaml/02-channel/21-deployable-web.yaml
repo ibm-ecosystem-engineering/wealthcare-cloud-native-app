@@ -1,0 +1,150 @@
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-deployment-web
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"  
+  labels:
+    app: wealthcare-application
+    subapp: web
+spec:
+  template:
+    kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: wealthcare-web
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: web     
+    spec:
+      selector:
+        matchLabels:
+          app: wealthcare-application
+          subname: web
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            app: wealthcare-application
+            subname: web
+        spec:
+          containers:
+            - name: container-web
+              image: "mydockeruser/wealthcare-web-mcm-icam-dev:0.0.1"
+              imagePullPolicy: Always
+              ports:
+                - name: my-http
+                  containerPort: 9090
+                  protocol: TCP
+                - name: https
+                  containerPort: 8081
+              # livenessProbe:
+              #   httpGet:
+              #     path: /
+              #     port: my-http
+              #   initialDelaySeconds: 120
+              # failureThreshold: 6
+              # readinessProbe:
+              #   httpGet:
+              #     path: /
+              #     port: my-http
+              #   initialDelaySeconds: 120                  
+              resources:
+                requests:
+                  memory: "500Mi"
+                  # cpu: "250m"
+                limits:
+                  memory: "1000Mi"
+                  # cpu: "1000m"
+              env:
+                - name: LOG_REST_PAYLOAD
+                  value: "true"
+                - name: IBM_APM_RESTCLIENT_LOGLEVEL
+                  value: DEBUG_MAX
+                - name: OPENTRACING_ENABLED
+                  value: "true"
+                - name: JAEGER_SAMPLER_TYPE
+                  value: probabilistic
+                - name: JAEGER_SAMPLER_PARAM
+                  value: "1"
+                - name: LATENCY_SAMPLER_PARAM
+                  value: "1"
+                - name: configmap.prop.api.server.url.user
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: configmap.prop.api.server.url.user
+                - name: configmap.prop.api.server.url.financialplan
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: configmap.prop.api.server.url.financialplan
+              volumeMounts:
+                - name: global-environment
+                  mountPath: /opt/ibm/apm/serverconfig
+          volumes:
+            - name: global-environment
+              secret:
+                secretName: icam-server-secret      
+                optional: true
+---
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-service-web
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"  
+  labels:
+    app: wealthcare-application
+    subapp: web
+spec:
+  template:
+    kind: Service
+    apiVersion: v1
+    metadata:
+      name: wealthcare-web
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: web
+    spec:
+      type: LoadBalancer
+      ports:
+        - name: my-http
+          port: 9090
+          targetPort: my-http
+      selector:
+        app: wealthcare-application
+        subname: web
+---        
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-route-web
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"  
+  labels:
+    app: wealthcare-application
+    subapp: web
+spec:
+  template:
+    kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: wealthcare-web
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: web
+    spec:
+      path: /
+      to:
+        kind: Service
+        name: wealthcare-web
+        weight: 100
+      port:
+        targetPort: my-http

@@ -1,0 +1,12 @@
+apiVersion: app.ibm.com/v1alpha1
+kind: Channel
+metadata:
+  name: wealthcare-channel
+  namespace: wealthcare-channel-ns
+  labels:
+    app: wealthcare-application
+spec:
+  type: Namespace
+  pathname: wealthcare-channel-ns
+  sourceNamespaces:
+    - wealthcare-app-ns

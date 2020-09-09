@@ -1,0 +1,17 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: wealthcare
+  namespace: wealthcare-subscription-ns
+  labels:
+    app: wealthcare-application
+spec:
+  selector:
+    matchExpressions:
+    - key: app
+      operator: In
+      values:
+      - wealthcare-application
+  componentKinds:
+  - group: app.ibm.com
+    kind: Subscription

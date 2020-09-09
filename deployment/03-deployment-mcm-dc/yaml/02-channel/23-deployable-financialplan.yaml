@@ -1,0 +1,201 @@
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-deployment-financialplan
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"
+  labels:
+    app: wealthcare-application
+    subapp: financialplan
+spec:
+  template:
+    kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: wealthcare-financialplan
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: financialplan
+    spec:
+      selector:
+        matchLabels:
+          app: wealthcare-application
+          subname: financialplan
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            app: wealthcare-application
+            subname: financialplan
+        spec:
+          containers:
+            - name: container-financialplan
+              image: "mydockeruser/wealthcare-financialplan-mcm-icam-dev:0.0.1"
+              imagePullPolicy: Always
+              ports:
+                - name: my-http
+                  containerPort: 9092
+                  protocol: TCP
+                - name: https
+                  containerPort: 8082
+              # livenessProbe:
+              #   httpGet:
+              #     path: /financialplan
+              #     port: my-http
+              #   initialDelaySeconds: 120
+              # failureThreshold: 6
+              # readinessProbe:
+              #   httpGet:
+              #     path: /financialplan
+              #     port: my-http
+              #   initialDelaySeconds: 120                  
+              resources:
+                requests:
+                  memory: "500Mi"
+                  # cpu: "250m"
+                limits:
+                  memory: "1000Mi"
+                  # cpu: "1000m"            
+              env:
+                - name: LOG_REST_PAYLOAD
+                  value: "true"
+                - name: IBM_APM_RESTCLIENT_LOGLEVEL
+                  value: DEBUG_MAX
+                - name: OPENTRACING_ENABLED
+                  value: "true"
+                - name: JAEGER_SAMPLER_TYPE
+                  value: probabilistic
+                - name: JAEGER_SAMPLER_PARAM
+                  value: "1"
+                - name: LATENCY_SAMPLER_PARAM
+                  value: "1"
+                # DB2 Database
+                - name: spring.datasource.url
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.url
+                - name: spring.datasource.username
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.username
+                - name: spring.datasource.password
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.password
+                - name: spring.datasource.driver-class-name
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.driver-class-name
+                      optional: true    
+                - name: spring.jpa.database-platform
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.jpa.database-platform
+                      optional: true    
+                # MQ
+                - name: ibm.mq.channel
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.channel
+                - name: ibm.mq.queueManager
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueManager
+                - name: ibm.mq.connName
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.connName
+                - name: ibm.mq.queueName.financialPlan
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueName.financialPlan
+                - name: ibm.mq.queueName.customer
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueName.customer
+                - name: ibm.mq.queueName.wealthManager
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueName.wealthManager         
+                - name: ENV_API_SERVER_URL
+                  value: 
+              volumeMounts:
+                - name: global-environment
+                  mountPath: /opt/ibm/apm/serverconfig
+          volumes:
+          - name: global-environment
+            secret:
+              secretName: icam-server-secret      
+              optional: true   
+---
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-service-financialplan
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"
+  labels:
+    app: wealthcare-application
+    subapp: financialplan
+spec:
+  template:
+    kind: Service
+    apiVersion: v1
+    metadata:
+      name: wealthcare-financialplan
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: financialplan      
+    spec:
+      type: LoadBalancer
+      ports:
+        - name: my-http
+          port: 9090
+          targetPort: my-http
+      selector:
+        app: wealthcare-application
+        subname: financialplan
+---        
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-route-financialplan
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"  
+  labels:
+    app: wealthcare-application
+    subapp: financialplan
+spec:
+  template:
+    kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: wealthcare-financialplan
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: financialplan
+    spec:
+      path: /
+      to:
+        kind: Service
+        name: wealthcare-financialplan
+        weight: 100
+      port:
+        targetPort: my-http

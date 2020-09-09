@@ -1,0 +1,151 @@
+<div class="profile-container">
+
+
+    <table>
+        <thead>
+            <tr class="thead-td border">
+                <td class="display-flex">
+                    <div class="font-weight-bold">SELF</div>
+                    <div class="edit-profile cursor-pointer" (click)="editProfile()">Edit profile</div>
+                </td>
+                <!-- <td class="thead-td">Spouse</td> -->
+            </tr>
+            <tr class="thead-td">
+                <!-- <td class="thead-td">Self</td> -->
+                <td class="thead-td font-weight-bold">SPOUSE</td>
+            </tr>
+        </thead>
+        <tbody class="border">
+            <tr class="thead-td border">
+                <td>
+            <tr>
+                <td class="thead-td">
+                    <div>First Name:</div>
+                    <div> {{customerDetails.firstName}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="thead-td">
+                    <div>Last Name:</div>
+                    <div> {{customerDetails.lastName}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="thead-td">
+                    <div>Age:</div>
+                    <div> {{customerDetails.age}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="thead-td">
+                    <div>Gender:</div>
+                    <div> {{customerDetails.gender}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="thead-td">
+                    <div>Average Income Per Month:</div>
+                    <div> {{customerDetails.avgIncome}}</div>
+                </td>
+            </tr>
+            </td>
+            </tr>
+            <tr class="thead-td ">
+
+                <td>
+            <tr>
+                <td class="thead-td">
+                    <div>First Name:</div>
+                    <div> {{customerDetails.spouseFirstName}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="thead-td">
+                    <div>Last Name:</div>
+                    <div> {{customerDetails.spouseLastName}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="thead-td">
+                    <div>Age:</div>
+                    <div> {{customerDetails.spouseAge}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="thead-td">
+                    <div>Gender:</div>
+                    <div> {{customerDetails.spouseGender}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="thead-td">
+                    <div>Average Income Per Month:</div>
+                    <div> {{customerDetails.spouseAvgIncome}}</div>
+                </td>
+            </tr>
+            </td>
+            </tr>
+        </tbody>
+        <div class="child-container">
+            <table>
+                <thead>
+                    <tr class="thead-td border">
+                        <td class="thead-td font-weight-bold">Child 1</td>
+                        <!-- <td class="thead-td">Spouse</td> -->
+                    </tr>
+                    <tr class="thead-td">
+                        <!-- <td class="thead-td">Self</td> -->
+                        <td class="thead-td font-weight-bold">Child 2</td>
+                    </tr>
+                </thead>
+                <tbody class="border">
+                    <tr class="thead-td border">
+                        <td>
+                    <tr>
+                        <td class="thead-td">
+                            <div>First Name:</div>
+                            <div> {{customerDetails.child1FirstName}} {{customerDetails.child1LastName}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="thead-td">
+                            <div>Age:</div>
+                            <div> {{customerDetails.child1Age}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="thead-td">
+                            <div>Gender:</div>
+                            <div> {{customerDetails.child1Gender}}</div>
+                        </td>
+                    </tr>
+                    </td>
+                    </tr>
+                    <tr class="thead-td ">
+
+                        <td>
+                    <tr>
+                        <td class="thead-td">
+                            <div>First Name:</div>
+                            <div> {{customerDetails.child2FirstName}} {{customerDetails.child2LastName}}</div>
+                    </tr>
+                    <tr>
+                        <td class="thead-td">
+                            <div>Age:</div>
+                            <div> {{customerDetails.child2Age}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="thead-td">
+                            <div>Gender:</div>
+                            <div> {{customerDetails.child2Gender}}</div>
+                        </td>
+                    </tr>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </table>
+</div>
+<ibm-placeholder></ibm-placeholder>

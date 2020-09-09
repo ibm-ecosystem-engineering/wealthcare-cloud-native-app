@@ -1,0 +1,181 @@
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-deployment-user
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"
+  labels:
+    app: wealthcare-application
+    subapp: user
+spec:
+  template:
+    kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: wealthcare-user
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: user
+    spec:
+      selector:
+        matchLabels:
+          app: wealthcare-application
+          subname: user
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            app: wealthcare-application
+            subname: user
+        spec:
+          containers:
+            - name: container-user
+              image: "mydockeruser/wealthcare-user-mcm-dev:0.0.1"
+              imagePullPolicy: Always
+              ports:
+                - name: my-http
+                  containerPort: 9091
+                  protocol: TCP
+                - name: https
+                  containerPort: 8082
+              livenessProbe:
+                httpGet:
+                  path: /user
+                  port: my-http
+                initialDelaySeconds: 120
+              failureThreshold: 6
+              readinessProbe:
+                httpGet:
+                  path: /user
+                  port: my-http
+                initialDelaySeconds: 120                  
+              resources:
+                requests:
+                  memory: "500Mi"
+                  # cpu: "250m"
+                limits:
+                  memory: "1000Mi"
+                  # cpu: "1000m"             
+              env:
+                # DB2 Database
+                - name: spring.datasource.url
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.url
+                - name: spring.datasource.username
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.username
+                - name: spring.datasource.password
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.password
+                - name: spring.datasource.driver-class-name
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.datasource.driver-class-name
+                      optional: true
+                - name: spring.jpa.database-platform
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: spring.jpa.database-platform
+                      optional: true
+                # MQ
+                - name: ibm.mq.channel
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.channel
+                - name: ibm.mq.queueManager
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueManager
+                - name: ibm.mq.connName
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.connName
+                - name: ibm.mq.queueName.financialPlan
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueName.financialPlan
+                - name: ibm.mq.queueName.customer
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueName.customer
+                - name: ibm.mq.queueName.wealthManager
+                  valueFrom:
+                    configMapKeyRef:
+                      name: wealthcare-config-map
+                      key: ibm.mq.queueName.wealthManager
+                - name: ENV_API_SERVER_URL
+                  value: 
+---
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-service-user
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"
+  labels:
+    app: wealthcare-application
+    subapp: user
+spec:
+  template:
+    kind: Service
+    apiVersion: v1
+    metadata:
+      name: wealthcare-user
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: user
+    spec:
+      type: LoadBalancer
+      ports:
+        - name: my-http
+          port: 9090
+          targetPort: my-http
+      selector:
+        app: wealthcare-application
+        subname: user
+---
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: wealthcare-deployable-route-user
+  namespace: wealthcare-channel-ns
+  annotations:
+    app.ibm.com/is-local-deployable: "false"  
+  labels:
+    app: wealthcare-application
+    subapp: user
+spec:
+  template:
+    kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: wealthcare-user
+      namespace: wealthcare-app-ns
+      labels:
+        app: wealthcare-application
+        subname: user
+    spec:
+      path: /
+      to:
+        kind: Service
+        name: wealthcare-user
+        weight: 100
+      port:
+        targetPort: my-http

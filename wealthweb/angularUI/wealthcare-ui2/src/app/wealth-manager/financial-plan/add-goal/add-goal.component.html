@@ -1,0 +1,67 @@
+<form class="addUserForm">
+    <div class="formTitle" *ngIf="!selectedGoal">Add Goal</div>
+    <div class="formTitle" *ngIf="selectedGoal">Add Investment</div>
+
+    <div class="bx--form-item bx--text-input-wrapper" *ngIf="!selectedGoal">
+        <div class="bx--text-input__field-wrapper">
+            <input *ngIf="!selectedGoal" id="text-input-3" type="text" class="bx--text-input bx--text-input--light"
+                 [(ngModel)]="mainDataGoal.goalReference" name="goalReference" placeholder="Reference">
+        </div>
+    </div>
+
+    <div class="bx--form-item bx--text-input-wrapper" *ngIf="!selectedGoal">
+        <div class="bx--text-input__field-wrapper">
+            <input *ngIf="!selectedGoal" id="text-input-3" type="text" class="bx--text-input bx--text-input--light"
+                 [(ngModel)]="mainDataGoal.goalDesc" name="goalDesc" placeholder="Description">
+        </div>
+    </div>
+
+    <div class="bx--form-item bx--text-input-wrapper" *ngIf="!selectedGoal">
+        <div class="bx--text-input__field-wrapper">
+
+            <input *ngIf="!selectedGoal" id="text-input-3" type="text" class="bx--text-input bx--text-input--light"
+                 [(ngModel)]="mainDataGoal.targetDate" name="targetDate" placeholder="Target date">
+        </div>
+    </div>
+    <div class="bx--form-item bx--text-input-wrapper" *ngIf="!selectedGoal">
+        <div class="bx--text-input__field-wrapper">
+
+            <input id="text-input-3" type="text" class="bx--text-input bx--text-input--light"
+                 [(ngModel)]="mainDataGoal.targetAmount" name="targetAmount" placeholder="Target Amount">
+        </div>
+    </div>
+
+    <!-- Add investment -->
+    <ng-container *ngIf="selectedGoal">
+        <div class="display-flex-container"><label for="text-input-3" class="bx--label">Goal Description</label>
+            <label for="text-input-3" class="bx--label">{{selectedGoal.goalReference}}: {{selectedGoal.goalDesc}}</label>
+        </div>
+        <div class="display-flex-container"> <label for="text-input-3" class="bx--label">Target date</label>
+            <label for="text-input-3" class="bx--label">{{selectedGoal.targetDate}}</label>
+        </div>
+        <div class="display-flex-container">
+            <label for="text-input-3" class="bx--label">Target Amount</label>
+            <label for="text-input-3" class="bx--label">{{selectedGoal.targetAmount}}</label>
+        </div>
+        <div class="bx--form-item bx--text-input-wrapper">
+            <div class="bx--text-input__field-wrapper">
+                <input id="text-input-3" type="text" class="bx--text-input bx--text-input--light"
+                     [(ngModel)]="mainDataInvestment.investmentDate" name="investmentDate" placeholder="Investment date">
+            </div>
+        </div>
+        <div class="bx--form-item bx--text-input-wrapper">
+            <div class="bx--text-input__field-wrapper">
+                <input id="text-input-3" type="text" class="bx--text-input bx--text-input--light"
+                     [(ngModel)]="mainDataInvestment.investmentAmount" name="investmentAmount" placeholder="New Investment in INR">
+            </div>
+        </div>
+    </ng-container>
+
+    <div class="bx--form-item button-container">
+        <button *ngIf="!selectedGoal" class="bx--btn bx--btn--primary" type="button" (click)="saveGoal()">Save</button>
+        <button *ngIf="selectedGoal" class="bx--btn bx--btn--primary" type="button" (click)="saveInvestment()">Save</button>
+        <button class="bx--btn bx--btn--primary" type="button" (click)="closeAddBlock(false)">Cancel</button>
+    </div>
+
+
+</form>
