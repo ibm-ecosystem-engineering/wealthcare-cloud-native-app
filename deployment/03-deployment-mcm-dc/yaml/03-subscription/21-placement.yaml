@@ -2,71 +2,7 @@
 apiVersion: app.ibm.com/v1alpha1
 kind: PlacementRule
 metadata:
-  name: wealthcare-common
-  namespace: wealthcare-subscription-ns
-  labels:
-    app: wealthcare-application
-spec:
-  clusterReplicas: 1
-  clusterLabels:
-    matchExpressions:
-      - key: name
-        operator: In
-        values:
-        - deb-managed-app-1
----
-apiVersion: app.ibm.com/v1alpha1
-kind: PlacementRule
-metadata:
-  name: wealthcare-web
-  namespace: wealthcare-subscription-ns
-  labels:
-    app: wealthcare-application
-spec:
-  clusterReplicas: 1
-  clusterLabels:
-    matchExpressions:
-      - key: name
-        operator: In
-        values:
-        - deb-managed-app-1
----
-apiVersion: app.ibm.com/v1alpha1
-kind: PlacementRule
-metadata:
-  name: wealthcare-user
-  namespace: wealthcare-subscription-ns
-  labels:
-    app: wealthcare-application
-spec:
-  clusterReplicas: 1
-  clusterLabels:
-    matchExpressions:
-      - key: name
-        operator: In
-        values:
-        - deb-managed-app-1
----
-apiVersion: app.ibm.com/v1alpha1
-kind: PlacementRule
-metadata:
-  name: wealthcare-financialplan
-  namespace: wealthcare-subscription-ns
-  labels:
-    app: wealthcare-application
-spec:
-  clusterReplicas: 1
-  clusterLabels:
-    matchExpressions:
-      - key: name
-        operator: In
-        values:
-        - deb-managed-app-1
----
-apiVersion: app.ibm.com/v1alpha1
-kind: PlacementRule
-metadata:
-  name: wealthcare-notification
+  name: wealthcare-placementrule
   namespace: wealthcare-subscription-ns
   labels:
     app: wealthcare-application

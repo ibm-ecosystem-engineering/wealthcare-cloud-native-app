@@ -104,9 +104,11 @@ Note: The jars created using the above step would be used in the below steps by 
 
 #### Download Runtime Data collector
 
-1. Download the runtime data collector using info the below url.
+1. Download the runtime data collector using info the below url based on the mcm version (1.3.0 or 2.1.0).
 
-https://www.ibm.com/support/knowledgecenter/SSFC4F_1.3.0/icam/download_j2se_dc.html
+https://www.ibm.com/support/knowledgecenter/SSFC4F_2.1.0/icam/download_j2se_dc.html
+https://www.ibm.com/support/knowledgecenter/SSFC4F_1.3.0/icam/dc_config_server_info.html
+
 
 2. Copy the `j2se_datacollector.tgz` file into the below folders.
 
@@ -190,9 +192,9 @@ find the `image` tag like the below and update it appropriately.
    image: "mydockeruser/welathcare-web-mcm-icam-dev:0.0.1"
 ```
 
-## 3 Deploying in OCP (MCM 1.3.0 Hub)
+## 3 Deploying in OCP (MCM Hub)
 
-### 3.1 Obtain the Hub server config info.
+### 3.1 Obtain the Hub server config info (This step is Not required for MCM 2.1.0 and above).
 
 1. Obtain the hub server config info using the below url. As as result you might have downloaded with `ibm-cloud-apm-dc-configpack.tar`.
 
@@ -210,7 +212,7 @@ deployment/03-deployment-mcm-dc/datacollector/ibm-cloud-apm-dc-configpack/global
 deployment/03-deployment-mcm-dc/datacollector/ibm-cloud-apm-dc-configpack/readme.md
 ```
 
-### 3.2 Update the Secret with Hub config info
+### 3.2 Update the Secret with Hub config info (This step is Not required for MCM 2.1.0 and above).
 
 1. Goto `deployment/03-deployment-mcm-dc/install` folder in command prompt.
 

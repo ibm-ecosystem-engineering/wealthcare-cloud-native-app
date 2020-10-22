@@ -1,7 +1,7 @@
 apiVersion: app.ibm.com/v1alpha1
 kind: Subscription
 metadata:
-  name: subscription-wealthcare-common
+  name: subscription-wealthcare
   namespace: wealthcare-subscription-ns
   labels:
     app: wealthcare-application
@@ -11,114 +11,12 @@ spec:
     labelSelector:
       matchLabels:
         app: wealthcare-application
-        subapp: common
   placement:
     placementRef:
-      name: wealthcare-common
+      name: wealthcare-placementrule
       kind: PlacementRule
-      group: app.ibm.com
   overrides:
   - clusterName: "/"
     clusterOverrides:
     - path: "metadata.namespace"
       value: wealthcare-app-ns
----
-apiVersion: app.ibm.com/v1alpha1
-kind: Subscription
-metadata:
-  name: subscription-wealthcare-web
-  namespace: wealthcare-subscription-ns
-  labels:
-    app: wealthcare-application
-spec:
-  channel: wealthcare-channel-ns/wealthcare-channel
-  packageFilter:
-    labelSelector:
-      matchLabels:
-        app: wealthcare-application
-        subapp: web
-  placement:
-    placementRef:
-      name: wealthcare-web
-      kind: PlacementRule
-      group: app.ibm.com
-  overrides:
-  - clusterName: "/"
-    clusterOverrides:
-    - path: "metadata.namespace"
-      value: wealthcare-app-ns      
----
-apiVersion: app.ibm.com/v1alpha1
-kind: Subscription
-metadata:
-  name: subscription-wealthcare-user
-  namespace: wealthcare-subscription-ns
-  labels:
-    app: wealthcare-application
-spec:
-  channel: wealthcare-channel-ns/wealthcare-channel
-  packageFilter:
-    labelSelector:
-      matchLabels:
-        app: wealthcare-application
-        subapp: user        
-  placement:
-    placementRef:
-      name: wealthcare-user
-      kind: PlacementRule
-      group: app.ibm.com
-  overrides:
-  - clusterName: "/"
-    clusterOverrides:
-    - path: "metadata.namespace"
-      value: wealthcare-app-ns      
----
-apiVersion: app.ibm.com/v1alpha1
-kind: Subscription
-metadata:
-  name: subscription-wealthcare-financialplan
-  namespace: wealthcare-subscription-ns
-  labels:
-    app: wealthcare-application
-spec:
-  channel: wealthcare-channel-ns/wealthcare-channel
-  packageFilter:
-    labelSelector:
-      matchLabels:
-        app: wealthcare-application
-        subapp: financialplan        
-  placement:
-    placementRef:
-      name: wealthcare-financialplan
-      kind: PlacementRule
-      group: app.ibm.com
-  overrides:
-  - clusterName: "/"
-    clusterOverrides:
-    - path: "metadata.namespace"
-      value: wealthcare-app-ns      
----
-apiVersion: app.ibm.com/v1alpha1
-kind: Subscription
-metadata:
-  name: subscription-wealthcare-notification
-  namespace: wealthcare-subscription-ns
-  labels:
-    app: wealthcare-application
-spec:
-  channel: wealthcare-channel-ns/wealthcare-channel
-  packageFilter:
-    labelSelector:
-      matchLabels:
-        app: wealthcare-application
-        subapp: notification        
-  placement:
-    placementRef:
-      name: wealthcare-notification
-      kind: PlacementRule
-      group: app.ibm.com
-  overrides:
-  - clusterName: "/"
-    clusterOverrides:
-    - path: "metadata.namespace"
-      value: wealthcare-app-ns      
