@@ -38,6 +38,7 @@ spec:
       spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
       configmap.test1.key: abcdefg
 ---
+# This is not required for MCM 2.1.0 and above.
 apiVersion: app.ibm.com/v1alpha1
 kind: Deployable
 metadata:
@@ -74,6 +75,7 @@ spec:
       - list
       - get
 ---
+# This is not required for MCM 2.1.0 and above.
 apiVersion: app.ibm.com/v1alpha1
 kind: Deployable
 metadata:
@@ -103,6 +105,7 @@ spec:
       name: wealthcare-lwdc-clusterrole
       apiGroup: rbac.authorization.k8s.io
 ---
+# This is not required for MCM 2.1.0 and above.
 apiVersion: app.ibm.com/v1alpha1
 kind: Deployable
 metadata:

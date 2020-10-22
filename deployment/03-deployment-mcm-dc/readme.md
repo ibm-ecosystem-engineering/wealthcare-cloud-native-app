@@ -2,8 +2,12 @@
 
 There is a detailed documentation on Deploying  Runtime data collector enabled MCM application is given in the below urls.
 
+#### Knowledge Center
+https://www.ibm.com/support/knowledgecenter/SSFC4F_2.1.0/icam/config_j2se_dc_intro.html
 https://www.ibm.com/support/knowledgecenter/SSFC4F_1.3.0/icam/config_j2se_dc_intro.html
 
+
+#### MCM 1.3.0
 https://developer.ibm.com/recipes/tutorials/installing-runtime-data-collector-instrumented-app-and-monitoring-mcm-golden-signals/
 
 https://github.com/GandhiCloudLab/mcm-goldensignals-upro
