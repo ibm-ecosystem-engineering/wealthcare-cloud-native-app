@@ -156,6 +156,18 @@ find the `image` tag like the below and update it appropriately.
 ```
       image: "gandhicloudlab/wealthcare-web-mcm-oss:0.0.1"
 ```
+
+
+3. In the below file, make sure you have the right values for MQ, DB, urls and etc.
+
+wealthcare-cloud-native-app/deployment/01-deployment-ocp/yaml/02-channel/20-deployable-common.yaml
+
+4. Update the below two properties which are pointing to the `user` and `financialplan` microservices.
+
+```
+      apiUrlUser: http://wealthcare-user-wealthcare-ns.<target_managed_cluster_url>
+      apiUrlFinancialplan: http://wealthcare-financialplan-wealthcare-ns.<target_managed_cluster_url>
+```
 ----------
 
 ## 3 Deploying in OCP
