@@ -32,7 +32,7 @@ spec:
         spec:
           containers:
             - name: container-web
-              image: "mydockeruser/wealthcare-web-mcm-icam-dev:0.0.1"
+              image: "gandhicloudlab/wealthcare-web-mcm-200-dc-oss:0.0.1"
               imagePullPolicy: Always
               ports:
                 - name: my-http
@@ -71,24 +71,17 @@ spec:
                   value: "1"
                 - name: LATENCY_SAMPLER_PARAM
                   value: "1"
-                - name: configmap.prop.api.server.url.user
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: configmap.prop.api.server.url.user
-                - name: configmap.prop.api.server.url.financialplan
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: configmap.prop.api.server.url.financialplan
-              volumeMounts:
-                - name: global-environment
-                  mountPath: /opt/ibm/apm/serverconfig
-          volumes:
-            - name: global-environment
-              secret:
-                secretName: icam-server-secret      
-                optional: true
+              envFrom:
+                - configMapRef:
+                    name: wealthcare-config-map
+          #     volumeMounts:
+          #       - name: global-environment
+          #         mountPath: /opt/ibm/apm/serverconfig
+          # volumes:
+          #   - name: global-environment
+          #     secret:
+          #       secretName: icam-server-secret      
+          #       optional: true
 ---
 apiVersion: app.ibm.com/v1alpha1
 kind: Deployable

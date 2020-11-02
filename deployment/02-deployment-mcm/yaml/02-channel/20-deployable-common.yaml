@@ -21,19 +21,42 @@ spec:
         subname: configmap
     type: Opaque
     data:
-      configmap.prop.api.server.url.user: http://wealthcare-user:9090
-      configmap.prop.api.server.url.financialplan: http://wealthcare-financialplan:9090
-      ibm.mq.channel: DEV.APP.SVRCONN
-      ibm.mq.queueManager: qmgr
-      ibm.mq.connName: 111.222.333.444(1414)
-      ibm.mq.queueName.financialPlan: DEV.QUEUE.1
-      ibm.mq.queueName.customer: DEV.QUEUE.2
-      ibm.mq.queueName.wealthManager: DEV.QUEUE.3
-      app.notification.from: test
-      app.notification.cc: test
-      spring.datasource.url: jdbc:h2:mem:/wcare
-      spring.datasource.username: admin
-      spring.datasource.password: admin
-      spring.datasource.driver-class-name: org.h2.Driver
-      spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+      ##### User and FinancialPlan services
+      apiUrlUser: http://wealthcare-user-wealthcare-ns.gsideappdomain.cloud/
+      apiUrlFinancialplan: http://wealthcare-financialplan-wealthcare-ns.gsideappdomain.cloud/
+      ##### MQ
+      configMapMqConnName: 111.222.333.444(1414)
+      configMapMqQueueManager: qmgr
+      configMapMqChannel: DEV.APP.SVRCONN
+      configMapMqQueueNameFinancialPlan: DEV.QUEUE.1
+      configMapMqQueueNameCustomer: DEV.QUEUE.2
+      configMapMqQueueNameWealthManager: DEV.QUEUE.3
+      configMapMqDeadQueueName: DEV.DEAD.LETTER.QUEUE
+      ##### DB-H2
+      databaseUrl: jdbc:h2:mem:/wcare
+      databaseUsername: admin
+      databasePassword: admin
+      databaseDriverClass: org.h2.Driver
+      databasePlatform: org.hibernate.dialect.H2Dialect
+      ##### DB-MySQL
+      # databaseUrl: jdbc:mysql://222.222.333.333:3306/wcare
+      # databaseUsername: usr
+      # databasePassword: pwddd
+      # databaseDriverClass: com.mysql.jdbc.Driver
+      # databasePlatform: org.hibernate.dialect.MySQL5Dialect
+      ##### DB-DB2
+      # databaseUrl: jdbc:db2://111.222.33.444:31463/wcare
+      # databaseUsername: usr
+      # databasePassword: pwddd
+      # databaseDriverClass: com.ibm.db2.jcc.DB2Driver
+      # databasePlatform: org.hibernate.dialect.DB2Dialect
+      ##### Notification
+      configMapAppNotificationFrom: test
+      configMapAppNotificationCC: test
+      configMapAppNotificationOpenWhiskUser: testconfigmap.test1.key
+      configMapAppNotificationOpenWhiskPassword: test
+      configMapAppNotificationOpenWhiskUrl: test@teset11.com
+      ##### Watson FinancialPlan
+      watsonOptionEnabled: "false"
+      watsonUrlFinancialPlan: https://test@test11.com 
 ---

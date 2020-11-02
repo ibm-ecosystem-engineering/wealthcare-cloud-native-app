@@ -21,113 +21,42 @@ spec:
         subname: configmap
     type: Opaque
     data:
-      configmap.prop.api.server.url.user: http://wealthcare-user:9090
-      configmap.prop.api.server.url.financialplan: http://wealthcare-financialplan:9090
-      ibm.mq.channel: DEV.APP.SVRCONN
-      ibm.mq.queueManager: qmgr
-      ibm.mq.connName: 111.222.333.444(1414)
-      ibm.mq.queueName.financialPlan: DEV.QUEUE.1
-      ibm.mq.queueName.customer: DEV.QUEUE.2
-      ibm.mq.queueName.wealthManager: DEV.QUEUE.3
-      app.notification.from: test
-      app.notification.cc: test
-      spring.datasource.url: jdbc:h2:mem:/wcare
-      spring.datasource.username: admin
-      spring.datasource.password: admin
-      spring.datasource.driver-class-name: org.h2.Driver
-      spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-      configmap.test1.key: abcdefg
+      ##### User and FinancialPlan services
+      apiUrlUser: http://wealthcare-user-wealthcare-app-ns.mcm20-managed-cluster-4c8.appdomain.cloud/
+      apiUrlFinancialplan: http://wealthcare-financialplan-wealthcare-app-ns.mcm20-managed-cluster-4c8.appdomain.cloud/
+      ##### MQ
+      configMapMqConnName: 111.222.333.444(1414)
+      configMapMqQueueManager: qmgr
+      configMapMqChannel: DEV.APP.SVRCONN
+      configMapMqQueueNameFinancialPlan: DEV.QUEUE.1
+      configMapMqQueueNameCustomer: DEV.QUEUE.2
+      configMapMqQueueNameWealthManager: DEV.QUEUE.3
+      configMapMqDeadQueueName: DEV.DEAD.LETTER.QUEUE
+      ##### DB-H2
+      databaseUrl: jdbc:h2:mem:/wcare
+      databaseUsername: admin
+      databasePassword: admin
+      databaseDriverClass: org.h2.Driver
+      databasePlatform: org.hibernate.dialect.H2Dialect
+      ##### DB-MySQL
+      # databaseUrl: jdbc:mysql://222.222.333.333:3306/wcare
+      # databaseUsername: usr
+      # databasePassword: pwddd
+      # databaseDriverClass: com.mysql.jdbc.Driver
+      # databasePlatform: org.hibernate.dialect.MySQL5Dialect
+      ##### DB-DB2
+      # databaseUrl: jdbc:db2://111.222.33.444:31463/wcare
+      # databaseUsername: usr
+      # databasePassword: pwddd
+      # databaseDriverClass: com.ibm.db2.jcc.DB2Driver
+      # databasePlatform: org.hibernate.dialect.DB2Dialect
+      ##### Notification
+      configMapAppNotificationFrom: test
+      configMapAppNotificationCC: test
+      configMapAppNotificationOpenWhiskUser: testconfigmap.test1.key
+      configMapAppNotificationOpenWhiskPassword: test
+      configMapAppNotificationOpenWhiskUrl: test@teset11.com
+      ##### Watson FinancialPlan
+      watsonOptionEnabled: "false"
+      watsonUrlFinancialPlan: https://test@test11.com 
 ---
-# This is not required for MCM 2.1.0 and above.
-apiVersion: app.ibm.com/v1alpha1
-kind: Deployable
-metadata:
-  name: wealthcare-deployable-lwdc-clusterrole
-  namespace: wealthcare-channel-ns
-  annotations:
-    app.ibm.com/is-local-deployable: "false"  
-  labels:
-    app: wealthcare-application
-    subapp: common
-spec:
-  template:
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole
-    metadata:
-      name: wealthcare-lwdc-clusterrole
-      labels:
-        app: wealthcare-application
-        subname: lwdc-clusterrole
-    rules:
-    - apiGroups:
-      - ""
-      - "apps"
-      - "extensions"
-      resources:
-      - nodes
-      - services
-      - configmaps
-      - pods
-      - deployments
-      - endpoints
-      - clusters
-      verbs:
-      - list
-      - get
----
-# This is not required for MCM 2.1.0 and above.
-apiVersion: app.ibm.com/v1alpha1
-kind: Deployable
-metadata:
-  name: wealthcare-deployable-lwdc-clusterrolebinding
-  namespace: wealthcare-channel-ns
-  annotations:
-    app.ibm.com/is-local-deployable: "false"  
-  labels:
-    app: wealthcare-application
-    subapp: common
-spec:
-  template:
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-      name: wealthcare-lwdc-rolebinding
-      namespace: wealthcare-app-ns
-      labels:
-        app: wealthcare-application
-        subname: lwdc-rolebinding
-    subjects:
-      - kind: User
-        name: system:serviceaccount:wealthcare-app-ns:default
-        apiGroup: rbac.authorization.k8s.io
-    roleRef:
-      kind: ClusterRole
-      name: wealthcare-lwdc-clusterrole
-      apiGroup: rbac.authorization.k8s.io
----
-# This is not required for MCM 2.1.0 and above.
-apiVersion: app.ibm.com/v1alpha1
-kind: Deployable
-metadata:
-  name: wealthcare-deployable-icam-server-secret
-  namespace: wealthcare-channel-ns
-  annotations:
-    app.ibm.com/is-local-deployable: "false"  
-  labels:
-    app: wealthcare-application
-    subapp: common
-spec:
-  template:
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: icam-server-secret
-      namespace: wealthcare-app-ns
-      labels:
-        app: wealthcare-application
-        subname: secret
-    data:
-      global.environment: dGVzdAo=
-      keyfile.jks: dGVzdAo=
-      keyfile.kdb: dGVzdAo=
-      keyfile.p12: dGVzdAo=

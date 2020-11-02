@@ -9,12 +9,12 @@ cd ../../../
 rootPATH="$(pwd)"
 echo "RootPath value is ............> $rootPATH"
 
-# docker login -u mydockeruser
+# docker login -u gandhicloudlab
 
 # Docker Image related variables
-# Example : docker.io/mydockeruser/welathcare-web-mcm-dev:0.0.1
-export IMAGE_SUFFIX=mcm-dev:0.0.1
-export REGISTRY_USER=mydockeruser
+# Example : docker.io/gandhicloudlab/welathcare-web-mcm-oss:0.0.1
+export IMAGE_SUFFIX=mcm-oss:0.0.1
+export REGISTRY_USER=gandhicloudlab
 
 cd $rootPATH/wealthweb/config
 sh 02-build-dockerhub.sh

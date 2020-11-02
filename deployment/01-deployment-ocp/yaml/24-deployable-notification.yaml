@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: container-notification
-          image: "mydockeruser/wealthcare-notification-dev:0.0.1"
+          image: "gandhicloudlab/wealthcare-notification-ocp-oss:0.0.1"
           imagePullPolicy: Always
           ports:
             - name: my-http
@@ -35,64 +35,9 @@ spec:
             limits:
               memory: "1024Mi"
               cpu: "500m" 
-          env:
-          # DB2 Database
-            - name: spring.datasource.url
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: spring.datasource.url
-            - name: spring.datasource.username
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: spring.datasource.username
-            - name: spring.datasource.password
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: spring.datasource.password
-            # MQ
-            - name: ibm.mq.channel
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: ibm.mq.channel
-            - name: ibm.mq.queueManager
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: ibm.mq.queueManager
-            - name: ibm.mq.connName
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: ibm.mq.connName
-            - name: ibm.mq.queueName.financialPlan
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: ibm.mq.queueName.financialPlan
-            - name: ibm.mq.queueName.customer
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: ibm.mq.queueName.customer
-            - name: ibm.mq.queueName.wealthManager
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: ibm.mq.queueName.wealthManager       
-            - name: app.notification.from
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: app.notification.from 
-            - name: app.notification.cc
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: app.notification.cc   
+          envFrom:
+            - configMapRef:
+                name: wealthcare-config-map
 ---
 apiVersion: v1
 kind: Service

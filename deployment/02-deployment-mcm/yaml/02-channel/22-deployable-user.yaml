@@ -32,7 +32,7 @@ spec:
         spec:
           containers:
             - name: container-user
-              image: "mydockeruser/wealthcare-user-mcm-dev:0.0.1"
+              image: "gandhicloudlab/wealthcare-user-mcm-oss:0.0.1"
               imagePullPolicy: Always
               ports:
                 - name: my-http
@@ -59,67 +59,21 @@ spec:
                   memory: "1000Mi"
                   # cpu: "1000m"             
               env:
-                # DB2 Database
-                - name: spring.datasource.url
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: spring.datasource.url
-                - name: spring.datasource.username
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: spring.datasource.username
-                - name: spring.datasource.password
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: spring.datasource.password
-                - name: spring.datasource.driver-class-name
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: spring.datasource.driver-class-name
-                      optional: true
-                - name: spring.jpa.database-platform
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: spring.jpa.database-platform
-                      optional: true
-                # MQ
-                - name: ibm.mq.channel
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: ibm.mq.channel
-                - name: ibm.mq.queueManager
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: ibm.mq.queueManager
-                - name: ibm.mq.connName
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: ibm.mq.connName
-                - name: ibm.mq.queueName.financialPlan
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: ibm.mq.queueName.financialPlan
-                - name: ibm.mq.queueName.customer
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: ibm.mq.queueName.customer
-                - name: ibm.mq.queueName.wealthManager
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: ibm.mq.queueName.wealthManager
-                - name: ENV_API_SERVER_URL
-                  value: 
+                - name: LOG_REST_PAYLOAD
+                  value: "true"
+                - name: IBM_APM_RESTCLIENT_LOGLEVEL
+                  value: DEBUG_MAX
+                - name: OPENTRACING_ENABLED
+                  value: "true"
+                - name: JAEGER_SAMPLER_TYPE
+                  value: probabilistic
+                - name: JAEGER_SAMPLER_PARAM
+                  value: "1"
+                - name: LATENCY_SAMPLER_PARAM
+                  value: "1"
+              envFrom:
+                - configMapRef:
+                    name: wealthcare-config-map
 ---
 apiVersion: app.ibm.com/v1alpha1
 kind: Deployable

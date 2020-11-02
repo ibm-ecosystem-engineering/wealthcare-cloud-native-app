@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: container-web
-          image: "mydockeruser/wealthcare-web-dev:0.0.1"
+          image: "gandhicloudlab/wealthcare-web-ocp-oss:0.0.1"
           imagePullPolicy: Always
           ports:
             - name: my-http
@@ -34,18 +34,10 @@ spec:
               cpu: "250m"
             limits:
               memory: "1024Mi"
-              cpu: "500m"        
-          env:
-            - name: configmap.prop.api.server.url.user
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: configmap.prop.api.server.url.user
-            - name: configmap.prop.api.server.url.financialplan
-              valueFrom:
-                configMapKeyRef:
-                  name: wealthcare-config-map
-                  key: configmap.prop.api.server.url.financialplan
+              cpu: "500m"
+          envFrom:
+            - configMapRef:
+                name: wealthcare-config-map
 ---
 apiVersion: v1
 kind: Service

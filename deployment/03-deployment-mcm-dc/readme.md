@@ -1,21 +1,11 @@
 # Build and Deployment in OCP with MCM and Monitoring
 
-There is a detailed documentation on Deploying  Runtime data collector enabled MCM application is given in the below urls.
-
-#### Knowledge Center
-https://www.ibm.com/support/knowledgecenter/SSFC4F_2.1.0/icam/config_j2se_dc_intro.html
-https://www.ibm.com/support/knowledgecenter/SSFC4F_1.3.0/icam/config_j2se_dc_intro.html
-
-
-#### MCM 1.3.0
-https://developer.ibm.com/recipes/tutorials/installing-runtime-data-collector-instrumented-app-and-monitoring-mcm-golden-signals/
-
-https://github.com/GandhiCloudLab/mcm-goldensignals-upro
+If you want to use the default image provided with this app, you can skip the step 1 and goto the step 2 (Update Yaml files for deployment) directly. 
 
 
 ## 1. Build
 
-### 1.1 Build Angular UI
+### 1.1 Build Angular UI  (Do this step only if you have modified the angular code)
 
 The angular UI is used in `wealthweb` microservices. The angular source code is available in `wealthcare/wealthweb/angularUI/wealthcare-ui2`.
 
@@ -56,11 +46,11 @@ The angular UI might have been compiled and the files are copied to folder
 wealthweb/src/main/resources/static
 ```
 
-### 1.2 Build microservices 
+### 1.2 Build microservices (You can skip this step, if you want to use the default images given)
 
 Now compile all the microservices.
 
-1. Make sure you have the right values for MQ, DB, urls and etc in the below property files. This can't be overrided through configmap yaml.
+1. Make sure you have the right values for MQ, DB, urls and etc in the below property files. You can also override this in configmap yaml.
 
 ```
 wealthweb/src/main/resources/application.properties
@@ -69,24 +59,12 @@ wealthfinancialplan/src/main/resources/application.properties
 wealthnotification/src/main/resources/application.properties
 ```
 
-In the below properties
-
-```
-wealthweb/src/main/resources/application.properties
-```
-
-Update url.user with 
+The property file `wealthweb/src/main/resources/application.properties` contains the below two properties and they points to the `user` and `financialplan` microservices.
 
 ```
       configmap.prop.api.server.url.user: http://wealthcare-user-wealthcare-app-ns.<target_managed_cluster_url>
-```
-
-Update url.financialplan with 
-
-```
       configmap.prop.api.server.url.financialplan: http://wealthcare-financialplan-wealthcare-app-ns.<target_managed_cluster_url>
 ```
-
 
 2. Goto the folder.
 
@@ -108,10 +86,9 @@ Note: The jars created using the above step would be used in the below steps by 
 
 #### Download Runtime Data collector
 
-1. Download the runtime data collector using info the below url based on the mcm version (1.3.0 or 2.1.0).
+1. Download the runtime data collector using info the below url.
 
 https://www.ibm.com/support/knowledgecenter/SSFC4F_2.1.0/icam/download_j2se_dc.html
-https://www.ibm.com/support/knowledgecenter/SSFC4F_1.3.0/icam/dc_config_server_info.html
 
 
 2. Copy the `j2se_datacollector.tgz` file into the below folders.
@@ -134,28 +111,29 @@ deployment/03-deployment-mcm-dc/build/11-build-dockerhub.sh
 2. Update the below, image related parameters.
 
 ```
-export IMAGE_SUFFIX=mcm-icam-dev:0.0.1
-export REGISTRY_USER=mydockeruser
+export IMAGE_SUFFIX=mcm-200-dc-oss:0.0.1
+export REGISTRY_USER=gandhicloudlab
 ```
 
 IMAGE_SUFFIX : Image suffix with version.
-
 REGISTRY_USER : Docker image registry user
+
+**Note:** You need to change the REGISTRY_USER with your dockerhub id.
 
 With the above parameter the image name would be created like the below.
 
 ```
-docker.io/mydockeruser/welathcare-web-mcm-icam-dev:0.0.1
-docker.io/mydockeruser/welathcare-users-mcm-icam-dev:0.0.1
-docker.io/mydockeruser/welathcare-financialplan-mcm-icam-dev:0.0.1
-docker.io/mydockeruser/welathcare-notification-mcm-icam-dev:0.0.1
+docker.io/gandhicloudlab/welathcare-web-mcm-200-dc-oss:0.0.1
+docker.io/gandhicloudlab/welathcare-users-mcm-200-dc-oss:0.0.1
+docker.io/gandhicloudlab/welathcare-financialplan-mcm-200-dc-oss:0.0.1
+docker.io/gandhicloudlab/welathcare-notification-mcm-200-dc-oss:0.0.1
 ```
 
 3. Login into the docker registry
 
 ex:
 ```
-docker login -u mydockeruser
+docker login -u gandhicloudlab
 ```
 
 4. Goto the folder.
@@ -169,6 +147,7 @@ deployment/03-deployment-mcm-dc
 ```
 sh 02-build-dockerhub.sh
 ```
+----------
 
 ## 2. Update Yaml files for deployment
 
@@ -178,7 +157,7 @@ sh 02-build-dockerhub.sh
 deployment/03-deployment-mcm-dc/yaml/03-subscription/21-placement.yaml
 ```
 
-find the text `deb-managed-app-1` and replace it with appropriate managed cluster.
+find the text `mcm-managed-cp4a-cluster` and replace it with appropriate managed cluster.
 
 
 2. In the below files
@@ -193,59 +172,20 @@ deployment/03-deployment-mcm-dc/yaml/02-channel/24-deployable-notification.yaml
 find the `image` tag like the below and update it appropriately.
 
 ```
-   image: "mydockeruser/welathcare-web-mcm-icam-dev:0.0.1"
+      image: "gandhicloudlab/wealthcare-web-mcm-200-dc-oss:0.0.1"
 ```
-
+----------
 ## 3 Deploying in OCP (MCM Hub)
 
-### 3.1 Obtain the Hub server config info (This step is Not required for MCM 2.1.0 and above).
+### 3.1 Log in to the hub cluster as an **account operator**
 
-1. Obtain the hub server config info using the below url. As as result you might have downloaded with `ibm-cloud-apm-dc-configpack.tar`.
-
-https://www.ibm.com/support/knowledgecenter/SSFC4F_1.3.0/icam/dc_config_server_info.html
-
-
-2. Extract the `ibm-cloud-apm-dc-configpack.tar` into the folder `deployment/03-deployment-mcm-dc/datacollector`.
-
-Now you should have the below files and folders.
-
-```
-deployment/03-deployment-mcm-dc/datacollector/ibm-cloud-apm-dc-configpack/keyfiles
-deployment/03-deployment-mcm-dc/datacollector/ibm-cloud-apm-dc-configpack/dc-secret.yaml
-deployment/03-deployment-mcm-dc/datacollector/ibm-cloud-apm-dc-configpack/global.environment
-deployment/03-deployment-mcm-dc/datacollector/ibm-cloud-apm-dc-configpack/readme.md
-```
-
-### 3.2 Update the Secret with Hub config info (This step is Not required for MCM 2.1.0 and above).
-
-1. Goto `deployment/03-deployment-mcm-dc/install` folder in command prompt.
-
-2. Run the below command to create icam-server-secrets.
-
-```
-sh 52-generate-icam-server-secret.sh
-```
-
-It will print the values in the console.
-
-3. Copy the content of the last 4 properties listed in the console above and replace it in the file `deployment/03-deployment-mcm-dc/yaml/02-channel/20-deployable-common.yaml`
-
-```
-global.environment: dGVzdA==
-keyfile.jks: dGVzdA==
-keyfile.kdb: dGVzdA==
-keyfile.p12: dGVzdA==
-```
-
-### 3.3 Log in to the hub cluster as an **account operator**
-
-Login into hub cluster as an **account operator**. If you don't have operator user, stick to the account administrator  user.
+Login into hub cluster as an **account operator**. If you don't have operator user, stick to the account administrator user.
 
 ```
 cloudctl login -a <cluster URL> -u <account-admin-username> -p <account-operator-password> --skip-ssl-validation -c <account ID or name> -n <namespace>
 ```
 
-### 3.4 Install the app in Hub
+### 3.2 Install the app in Hub
 
 1. Goto `deployment/03-deployment-mcm-dc/install` folder in command prompt
 
@@ -257,7 +197,7 @@ sh 12-install-app-in-hub.sh
 
 The application get installed in the mcm hub. Based the placement rule the deployables are placed on the right managed cluster.
 
-
+----------
 ## 4 Accessing the installed application
 
 The application get installed in the mcm hub.
@@ -272,4 +212,25 @@ oc get route -n wealthcare-app-ns
 
 It may list the routes created. Access the route starting with `wealthcare-web-wealthcare-app-ns....`
 
+3. You can use the below user names and passwords.
+
+```
+sam/sam           (Wealth Manager)
+sandy/sandy       (Customer)
+harry/harry       (Business Manager)
+```
+
+----------
+## References
+
+There is a detailed documentation on Deploying  Runtime data collector enabled MCM application is given in the below urls.
+
+https://www.ibm.com/support/knowledgecenter/SSFC4F_2.1.0/icam/config_j2se_dc_intro.html
+https://www.ibm.com/support/knowledgecenter/SSFC4F_1.3.0/icam/config_j2se_dc_intro.html
+
+
+#### MCM 1.3.0
+https://developer.ibm.com/recipes/tutorials/installing-runtime-data-collector-instrumented-app-and-monitoring-mcm-golden-signals/
+
+https://github.com/GandhiCloudLab/mcm-goldensignals-upro
 

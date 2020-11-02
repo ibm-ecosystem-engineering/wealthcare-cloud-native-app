@@ -32,8 +32,8 @@ spec:
         spec:
           containers:
             - name: container-web
-            image: "mydockeruser/wealthcare-web-mcm-dev:0.0.1"
-            imagePullPolicy: Always
+              image: "gandhicloudlab/wealthcare-web-mcm-oss:0.0.1"
+              imagePullPolicy: Always
               ports:
                 - name: my-http
                   containerPort: 9090
@@ -59,16 +59,21 @@ spec:
                   memory: "1000Mi"
                   # cpu: "1000m"
               env:
-                - name: configmap.prop.api.server.url.user
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: configmap.prop.api.server.url.user
-                - name: configmap.prop.api.server.url.financialplan
-                  valueFrom:
-                    configMapKeyRef:
-                      name: wealthcare-config-map
-                      key: configmap.prop.api.server.url.financialplan
+                - name: LOG_REST_PAYLOAD
+                  value: "true"
+                - name: IBM_APM_RESTCLIENT_LOGLEVEL
+                  value: DEBUG_MAX
+                - name: OPENTRACING_ENABLED
+                  value: "true"
+                - name: JAEGER_SAMPLER_TYPE
+                  value: probabilistic
+                - name: JAEGER_SAMPLER_PARAM
+                  value: "1"
+                - name: LATENCY_SAMPLER_PARAM
+                  value: "1"
+              envFrom:
+                - configMapRef:
+                    name: wealthcare-config-map
 ---
 apiVersion: app.ibm.com/v1alpha1
 kind: Deployable
