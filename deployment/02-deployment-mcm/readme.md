@@ -160,7 +160,9 @@ find the `image` tag like the below and update it appropriately.
 
 3. In the below file, make sure you have the right values for MQ, DB, urls and etc.
 
+```
 wealthcare-cloud-native-app/deployment/02-deployment-mcm/yaml/02-channel/20-deployable-common.yaml
+```
 
 4. Update the below two properties which are pointing to the `user` and `financialplan` microservices.
 
