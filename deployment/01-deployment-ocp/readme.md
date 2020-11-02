@@ -158,18 +158,21 @@ find the `image` tag like the below and update it appropriately.
 ```
 
 
-3. In the below file, make sure you have the right values for MQ, DB, urls and etc.
+3. In the below file
 
 ```
 wealthcare-cloud-native-app/deployment/01-deployment-ocp/yaml/02-channel/20-deployable-common.yaml
 ```
 
-4. Update the below two properties which are pointing to the `user` and `financialplan` microservices.
+Update the below two properties which are pointing to the `user` and `financialplan` microservices.
 
 ```
       apiUrlUser: http://wealthcare-user-wealthcare-ns.<target_managed_cluster_url>
       apiUrlFinancialplan: http://wealthcare-financialplan-wealthcare-ns.<target_managed_cluster_url>
 ```
+
+You can also update the DB, MQ and etc. But they are optional.
+
 ----------
 
 ## 3 Deploying in OCP
