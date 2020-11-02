@@ -143,7 +143,7 @@ deployment/02-deployment-mcm/yaml/03-subscription/21-placement.yaml
 
 find the text `mcm-managed-cp4a-cluster` and replace it with appropriate managed cluster.
 
-2. In the below files
+2. In the below files (skip this step if you are using default image)
 
 ```
 deployment/02-deployment-mcm/yaml/02-channel/21-deployable-web.yaml

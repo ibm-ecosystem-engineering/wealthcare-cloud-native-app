@@ -160,7 +160,7 @@ deployment/03-deployment-mcm-dc/yaml/03-subscription/21-placement.yaml
 find the text `mcm-managed-cp4a-cluster` and replace it with appropriate managed cluster.
 
 
-2. In the below files
+2. In the below files  (skip this step if you are using default image)
 
 ```
 deployment/03-deployment-mcm-dc/yaml/02-channel/21-deployable-web.yaml
@@ -175,7 +175,7 @@ find the `image` tag like the below and update it appropriately.
       image: "gandhicloudlab/wealthcare-web-mcm-200-dc-oss:0.0.1"
 ```
 
-3. In the below file
+3. In the below file 
 
 ```
 wealthcare-cloud-native-app/deployment/03-deployment-mcm-dc/yaml/02-channel/20-deployable-common.yaml
