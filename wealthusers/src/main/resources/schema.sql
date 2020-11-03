@@ -1,8 +1,8 @@
 --    This sql is executed only when H2 db is enabled in application.properties. This will not be executed for DB2.
 --  This sql file should be available in both wealthusers and wealthfinancialplan services
 
-	drop table IF EXISTS Wcusers;
-	create table Wcusers (
+	drop table IF EXISTS wcusers;
+	create table wcusers (
         id INTEGER IDENTITY(10001,1),
         UserName varchar(40),
         Password varchar(40),
@@ -10,8 +10,8 @@
         role varchar(40)
     );  
 
-    drop table IF EXISTS WcBusinessManager;
-    create table WcBusinessManager (
+    drop table IF EXISTS wcbusinessmanager;
+    create table wcbusinessmanager (
         id INTEGER IDENTITY(20001,1),
         WcUserId INT,
         FirstName varchar(40),
@@ -19,8 +19,8 @@
         StartDate date
     );
 
-    drop table IF EXISTS WcWealthManager;
-    create table WcWealthManager (
+    drop table IF EXISTS wcwealthmanager;
+    create table wcwealthmanager (
         id INTEGER IDENTITY(30001,1),
         WcUserId INT,
         FirstName varchar(40),
@@ -34,11 +34,11 @@
         ZipCode varchar (20)
     );
 
-    drop table IF EXISTS WcCustomer;
-    create table WcCustomer (
+    drop table IF EXISTS wccustomer;
+    create table wccustomer (
         id INTEGER IDENTITY(40001,1),
         WcUserId INT,
-        WcWealthManagerId INT,
+        wcwealthmanagerId INT,
 
         FirstName varchar(40),
         LastName varchar(40),
@@ -74,13 +74,13 @@
         ZipCode varchar (20)
     );
 
-    drop table IF EXISTS WcGoal;
-    create table WcGoal (
+    drop table IF EXISTS wcgoal;
+    create table wcgoal (
         id INTEGER IDENTITY(50001,1),
 
-       WcCustomerId INT,
+       wccustomerId INT,
 
-       WcWealthManagerId INT,
+       wcwealthmanagerId INT,
        GoalReference varchar(80),
        GoalDesc varchar(80),
        StartDate date,
@@ -88,10 +88,10 @@
        TargetAmount double
     );
 
-    drop table IF EXISTS WcInvestment;
-    create table WcInvestment(
+    drop table IF EXISTS wcinvestment;
+    create table wcinvestment(
         id INTEGER IDENTITY(60001,1),
-       WcGoalId INT,
+       wcgoalId INT,
        InvestmentDate date,
        InvestmentAmount double,
        StockAmount double,

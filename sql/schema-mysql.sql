@@ -1,7 +1,7 @@
 --    This schema file is for MySQL
 
-	drop table IF EXISTS Wcusers;
-	create table Wcusers (
+	drop table IF EXISTS wcusers;
+	create table wcusers (
         id INT NOT NULL AUTO_INCREMENT,
         UserName varchar(40),
         Password varchar(40),
@@ -9,10 +9,10 @@
         role varchar(40),
         PRIMARY KEY (id)
     );
-    ALTER TABLE Wcusers AUTO_INCREMENT = 10001;
+    ALTER TABLE wcusers AUTO_INCREMENT = 10001;
 
-    drop table IF EXISTS WcBusinessManager;
-    create table WcBusinessManager (
+    drop table IF EXISTS wcbusinessmanager;
+    create table wcbusinessmanager (
         id INT NOT NULL AUTO_INCREMENT,
         WcUserId INT,
         FirstName varchar(40),
@@ -20,10 +20,10 @@
         StartDate date,
         PRIMARY KEY (id)
     );
-    ALTER TABLE WcBusinessManager AUTO_INCREMENT = 20001;
+    ALTER TABLE wcbusinessmanager AUTO_INCREMENT = 20001;
 
-    drop table IF EXISTS WcWealthManager;
-    create table WcWealthManager (
+    drop table IF EXISTS wcwealthmanager;
+    create table wcwealthmanager (
         id INT NOT NULL AUTO_INCREMENT,
         WcUserId INT,
         FirstName varchar(40),
@@ -37,13 +37,13 @@
         ZipCode varchar (20),
         PRIMARY KEY (id)
     );
-    ALTER TABLE WcWealthManager AUTO_INCREMENT = 30001;
+    ALTER TABLE wcwealthmanager AUTO_INCREMENT = 30001;
 
-    drop table IF EXISTS WcCustomer;
-    create table WcCustomer (
+    drop table IF EXISTS wccustomer;
+    create table wccustomer (
         id INT NOT NULL AUTO_INCREMENT,
         WcUserId INT,
-        WcWealthManagerId INT,
+        wcwealthmanagerId INT,
 
         FirstName varchar(40),
         LastName varchar(40),
@@ -79,15 +79,15 @@
         ZipCode varchar (20),
         PRIMARY KEY (id)
     );
-    ALTER TABLE WcCustomer AUTO_INCREMENT = 40001;
+    ALTER TABLE wccustomer AUTO_INCREMENT = 40001;
 
-    drop table IF EXISTS WcGoal;
-    create table WcGoal (
+    drop table IF EXISTS wcgoal;
+    create table wcgoal (
         id INT NOT NULL AUTO_INCREMENT,
 
-       WcCustomerId INT,
+       wccustomerId INT,
 
-       WcWealthManagerId INT,
+       wcwealthmanagerId INT,
        GoalReference varchar(80),
        GoalDesc varchar(80),
        StartDate date,
@@ -95,12 +95,12 @@
        TargetAmount double,
         PRIMARY KEY (id)
     );
-    ALTER TABLE WcGoal AUTO_INCREMENT = 50001;
+    ALTER TABLE wcgoal AUTO_INCREMENT = 50001;
 
-    drop table IF EXISTS WcInvestment;
-    create table WcInvestment(
+    drop table IF EXISTS wcinvestment;
+    create table wcinvestment(
         id INT NOT NULL AUTO_INCREMENT,
-       WcGoalId INT,
+       wcgoalId INT,
        InvestmentDate date,
        InvestmentAmount double,
        StockAmount double,
@@ -108,4 +108,4 @@
        FixedDepositAmount double,
         PRIMARY KEY (id)
     );
-    ALTER TABLE WcInvestment AUTO_INCREMENT = 60001;
+    ALTER TABLE wcinvestment AUTO_INCREMENT = 60001;

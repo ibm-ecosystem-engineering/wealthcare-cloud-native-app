@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "WCWEALTHMANAGER")
+@Table(name = "wcwealthmanager")
 @Entity
 public class WcWealthManager {
 

@@ -3,7 +3,7 @@ package com.wealth.wealthusers.entity;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "WCBUSINESSMANAGER")
+@Table(name = "wcbusinessmanager")
 @Entity
 public class WcBusinessManager {
 

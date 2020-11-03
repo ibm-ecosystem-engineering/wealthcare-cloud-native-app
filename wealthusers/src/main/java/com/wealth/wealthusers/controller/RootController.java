@@ -12,7 +12,6 @@ public class RootController {
 
     @GetMapping("/")
     private String root () {
-        LogUtil.log("RootController called ... ");
         return "Welcome User!!!!";
     }
 

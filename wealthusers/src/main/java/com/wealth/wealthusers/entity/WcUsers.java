@@ -3,7 +3,7 @@ package com.wealth.wealthusers.entity;
 
 import javax.persistence.*;
 
-@Table(name = "WCUSERS")
+@Table(name = "wcusers")
 @Entity
 public class WcUsers {
 

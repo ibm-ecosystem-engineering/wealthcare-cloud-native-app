@@ -1,7 +1,7 @@
 	--    This schema file is for DB2
 
-    drop table Wcusers;
-	create table Wcusers (
+    drop table wcusers;
+	create table wcusers (
         id INTEGER  NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 10001, INCREMENT BY 1),
         UserName varchar(40),
         Password varchar(40),
@@ -10,8 +10,8 @@
         PRIMARY KEY (id)
     );
 
-    drop table WcBusinessManager;
-    create table WcBusinessManager (
+    drop table wcbusinessmanager;
+    create table wcbusinessmanager (
         id INTEGER  NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 20001, INCREMENT BY 1),
         WcUserId INTEGER,
         FirstName varchar(40),
@@ -20,8 +20,8 @@
         PRIMARY KEY (id)
     );
 
-    drop table WcWealthManager;
-    create table WcWealthManager (
+    drop table wcwealthmanager;
+    create table wcwealthmanager (
         id INTEGER  NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 30001, INCREMENT BY 1),
         WcUserId INTEGER,
         FirstName varchar(40),
@@ -36,12 +36,12 @@
         PRIMARY KEY (id)
     );
 
-    drop table WcCustomer;
-    create table WcCustomer (
+    drop table wccustomer;
+    create table wccustomer (
         id INTEGER  NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 40001, INCREMENT BY 1),
 
         WcUserId INTEGER,
-        WcWealthManagerId INTEGER,
+        wcwealthmanagerId INTEGER,
 
         FirstName varchar(40),
         LastName varchar(40),
@@ -79,12 +79,12 @@
         PRIMARY KEY (id)
     );
 
-    drop table WcGoal;
-    create table WcGoal (
+    drop table wcgoal;
+    create table wcgoal (
        id INTEGER  NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 50001, INCREMENT BY 1),
-       WcCustomerId INTEGER,
+       wccustomerId INTEGER,
 
-       WcWealthManagerId INTEGER,
+       wcwealthmanagerId INTEGER,
        GoalReference varchar(80),
        GoalDesc varchar(80),
        StartDate date,
@@ -94,10 +94,10 @@
        PRIMARY KEY (id)
     );
 
-    drop table WcInvestment;
-    create table WcInvestment(
+    drop table wcinvestment;
+    create table wcinvestment(
        id INTEGER  NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 60001, INCREMENT BY 1),
-       WcGoalId INTEGER,
+       wcgoalId INTEGER,
        InvestmentDate date,
        InvestmentAmount double,
        StockAmount double,

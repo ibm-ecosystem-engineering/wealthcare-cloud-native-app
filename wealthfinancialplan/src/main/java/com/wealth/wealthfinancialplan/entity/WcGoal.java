@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Table(name = "WCGOAL")
+@Table(name = "wcgoal")
 @Entity
 public class WcGoal {
 

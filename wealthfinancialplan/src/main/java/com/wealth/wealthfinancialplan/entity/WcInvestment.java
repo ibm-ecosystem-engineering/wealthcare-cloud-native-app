@@ -6,7 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "WCINVESTMENT")
+@Table(name = "wcinvestment")
 @Entity
 public class WcInvestment {
 
