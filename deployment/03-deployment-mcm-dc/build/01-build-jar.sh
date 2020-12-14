@@ -9,14 +9,14 @@ cd ../../../
 rootPATH="$(pwd)"
 echo "RootPath value is ............> $rootPATH"
 
-cd $rootPATH/wealthweb
-mvn clean package
+# cd $rootPATH/wealthweb
+# mvn clean package
 
 cd $rootPATH/wealthusers
 mvn clean package
 
-cd $rootPATH/wealthnotification
-mvn clean package
+# cd $rootPATH/wealthnotification
+# mvn clean package
 
 cd $rootPATH/wealthfinancialplan
 mvn clean package

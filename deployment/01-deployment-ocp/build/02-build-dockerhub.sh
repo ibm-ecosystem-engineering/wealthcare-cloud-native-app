@@ -16,14 +16,14 @@ echo "RootPath value is ............> $rootPATH"
 export IMAGE_SUFFIX=ocp-oss:0.0.1
 export REGISTRY_USER=gandhicloudlab
 
-cd $rootPATH/wealthweb/config
-sh 02-build-dockerhub.sh
+# cd $rootPATH/wealthweb/config
+# sh 02-build-dockerhub.sh
 
 cd $rootPATH/wealthusers/config
 sh 02-build-dockerhub.sh
 
-cd $rootPATH/wealthnotification/config
-sh 02-build-dockerhub.sh
+# cd $rootPATH/wealthnotification/config
+# sh 02-build-dockerhub.sh
 
 cd $rootPATH/wealthfinancialplan/config
 sh 02-build-dockerhub.sh

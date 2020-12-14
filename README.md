@@ -110,6 +110,14 @@ The Deployment steps are available [here](deployment/readme.md).
 
 Configuration related to the Database, MQ and etc are available [here](configuration.md).
 
+## Simulation
+
+The following simulation can be done in Wealthcare application easily.
+
+- Memory Saturation 
+- Response Time high
+
+Simulation related info is available [here](simulation).
 
 ## License
 

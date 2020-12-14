@@ -22,8 +22,8 @@ spec:
     type: Opaque
     data:
       ##### User and FinancialPlan services
-      apiUrlUser: http://wealthcare-user-wealthcare-app-ns.mcm20-managed-cluster-4c8.appdomain.cloud/
-      apiUrlFinancialplan: http://wealthcare-financialplan-wealthcare-app-ns.mcm20-managed-cluster-4c8.appdomain.cloud/
+      apiUrlUser: http://wealthcare-user-wealthcare-app-ns.mcm20-managed-cluster-4c84f19c22c6eb1784ba9d2966faea77-0000.eu-gb.containers.appdomain.cloud
+      apiUrlFinancialplan: http://wealthcare-financialplan-wealthcare-app-ns.mcm20-managed-cluster-4c84f19c22c6eb1784ba9d2966faea77-0000.eu-gb.containers.appdomain.cloud
       ##### MQ
       configMapMqConnName: 111.222.333.444(1414)
       configMapMqQueueManager: qmgr
@@ -33,17 +33,17 @@ spec:
       configMapMqQueueNameWealthManager: DEV.QUEUE.3
       configMapMqDeadQueueName: DEV.DEAD.LETTER.QUEUE
       ##### DB-H2
-      databaseUrl: jdbc:h2:mem:/wcare
-      databaseUsername: admin
-      databasePassword: admin
-      databaseDriverClass: org.h2.Driver
-      databasePlatform: org.hibernate.dialect.H2Dialect
+      # databaseUrl: jdbc:h2:mem:/wcare
+      # databaseUsername: admin
+      # databasePassword: admin
+      # databaseDriverClass: org.h2.Driver
+      # databasePlatform: org.hibernate.dialect.H2Dialect
       ##### DB-MySQL
-      # databaseUrl: jdbc:mysql://222.222.333.333:3306/wcare
-      # databaseUsername: usr
-      # databasePassword: pwddd
-      # databaseDriverClass: com.mysql.jdbc.Driver
-      # databasePlatform: org.hibernate.dialect.MySQL5Dialect
+      databaseUrl: jdbc:mysql://52.172.145.223:3306/wcare
+      databaseUsername: mysqluser
+      databasePassword: MySQL@GSILab210
+      databaseDriverClass: com.mysql.jdbc.Driver
+      databasePlatform: org.hibernate.dialect.MySQL5Dialect
       ##### DB-DB2
       # databaseUrl: jdbc:db2://111.222.33.444:31463/wcare
       # databaseUsername: usr
