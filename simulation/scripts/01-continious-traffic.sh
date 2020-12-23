@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Process started ...."
 
-SERVER_URL=mycluster-fdc90eeb94dbc70-0000.eu-de.containers.appdomain.cloud
+SERVER_URL=mycluster-fdc90eeb.domain.cloud
 echo $SERVER_URL
 
 ### clearMemory
